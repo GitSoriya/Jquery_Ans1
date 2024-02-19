@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery_Ans1</title>
+    <script src="jquery-3.7.1.min.js"></script>
+</head>
+<style>
+    .imageSlider{
+        width: 300px;
+        background-color: blue;
+        overflow: hidden;
+        /* សម្រាប់ធ្វើឲ្យបាត់នូវធាតុដែលលើសពីទំហំនៃ container ដែលក្រោមវា */
+        margin: 20px auto;
+        padding: 10px;
+    }
+    img{
+        width: 100%;
+    }
+    li{
+        flex-basis: 300px;
+        /* flex-basis: 400px; គឺសម្រាប់កំណត់ធាតុ flex 
+        ដែលចេញដំបូងមានទំហំ 400px គិតសែល ហើយនឹងមិនរួមតូចទេ
+        ប្រសិនបើមិនមានទំហំគ្រប់គ្រាន់នៅក្នុង flex container  */
+        flex-shrink: 0;   /* cannot shrink(បង្រួម), shrink 1 true(default),
+        0 false(ដាក់ឲស្របនឹង container) */
+        
+    }
+    ul{
+        list-style: none;
+        display: flex;
+        /* background-color: aqua; */
+        padding: 0px; /* ដាក់ img ឲមាន padding នៅកណ្តាល container */
+        transition: transform 0.5s;
+    }
+    button{
+        background-color: red;
+        padding: 10px 15px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        font-size: 15px;
+        color: white;
+        margin-right: 10px;
+    }
+    #start{
+        background-color: rgb(22, 150, 150);
+    }
+</style>
+<body>
+    <div class="imageSlider">
+        <ul>
+            <li><img src="images/html.png" alt="html_img"></li>  <!-- index 1 -->
+            <li><img src="images/css.png" alt=""></li>
+            <li><img src="images/javascript.png" alt=""></li>
+            <li><img src="images/jQuery1.png" alt=""></li>
+            <li><img src="images/bootstrab.png" alt=""></li>
+        </ul>
+        <button id="stop">stop</button>
+        <button id="start">start</button>
+    </div>
+</body>
+</html>
+<script>
+    
+    $(document).ready(function(){
+        var currentIndex = 0; // កំណត់ទីតាំងនៃ slide (5 img), ដាក់ទីតាំងឲ slide
+        var interval;
+        function nextSlide(){ //ឲរូបភាព​ផ្លាស់ទី(ពី​ slide 1 to slide 1)
+            currentIndex = (currentIndex + 1 ) % 5 ; // index 1 , image 5 => currentIndex = 1 (សំណល់)
+            var newTransformValue = -currentIndex * 300; // -300, currentIndex: number
+            // $("ul").css("transform", "translateX("+newTransformValue+"px)"); //newTransformValue = 400
+            $('ul').css('transform','translateX('+newTransformValue+'px)');
+        }
+        
+        function startSlider(){
+            if(!interval){
+                interval = setInterval(nextSlide, 1000); // វា execute 5 ដង
+            }
+        }
+        startSlider(); // call function
+        $('#start').click(startSlider);
+
+        function stopSlider(){
+            clearInterval(interval);
+            interval = null;
+        }
+        $('#stop').click(stopSlider);
+    });
+</script>
+<!-- 
+    + function:
+    - setInterval(callback, deplay); : គេប្រើដើម្បី function this execute again and again
+    . callback : ឲ្យ slide វាដំណើរការក្នុងរយៈប៉ុន្មានដង(function ដែលយើង create nextSlide)
+    . deplay = time (1000 = 1second)
+
+    + newTransformValue : បង្កើត index បន្ត " currentIndex​ * 400;"(វានឹងផ្លាស់ទី 400px) => មានការផ្លាស់ទីទំហំប៉ុនៗគ្នា(400)
+    + dynamic : 'translatex(newTransformValue)+'px)
+    + ​ពេលណាដែលយើងចង់ឲវា translate យើងត្រូវដាក់ value ឲវា
+    . + : ផ្លាស់ទីពីស្តាំទៅឆ្វេង
+    . - : ផ្លាស់ទីពីឆ្វេងទៅស្តាំ
+
+    + $('li').Length(); : វារាប់ image ទាំងអស់​​​ ​(currentIndex = (currentIndex + 1 ) % 5 ;)
+ -->
